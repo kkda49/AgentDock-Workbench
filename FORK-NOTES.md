@@ -1,0 +1,34 @@
+# 维护说明（kkda49/AgentDock-Workbench）
+
+本仓库是 [A-m-o-r-F-a-t-i/AgentDock-Workbench](https://github.com/A-m-o-r-F-a-t-i/AgentDock-Workbench) 的独立维护副本。
+上游本身是 [uvwt/agentdock](https://github.com/uvwt/agentdock) 的分支（Apache-2.0）。由于 kkda49 账号的 fork 网络名额被旧的 `kkda49/agentdock` 占用，本仓库采用"独立仓库 + upstream 远程"的方式做等价 fork。
+
+## 远程与同步
+
+- `origin`：本仓库；`upstream`：A-m-o-r-F-a-t-i/AgentDock-Workbench
+- 跟上游同步：
+
+```bash
+git fetch upstream
+git merge upstream/main
+git push origin main
+```
+
+## 本仓库相对上游的改动
+
+1. `desktop/windows/control-panel/Themes/Tokens.xaml`：ComboBox 模板补上可编辑部件（`PART_EditableTextBox` + `IsEditable` 触发器），修复目标模式弹窗"浏览器本机调试端点"输入框无法打字的问题；非可编辑下拉框行为不变（已单独提交）
+2. `.github/workflows/windows-installer.yml`：
+   - 历史升级矩阵缩减为 1.1.8 / 1.1.9 两个基线（缩短验证时间）
+   - 历史基线安装包改为从上游仓库的 Release 下载（本仓库不承载旧版本发布）
+3. 其余工作流（macOS / Android / WB0x 候选 / CodeQL 等）在本仓库已禁用，减少无关运行；需要时 `gh workflow enable "<名称>"` 恢复
+
+## 构建与安装包获取
+
+- 推送触及 `desktop/windows/**`、`scripts/**`、`cmd/**`、`internal/**` 等路径会触发 **Windows Installer** 工作流；也可在 Actions 页手动 `workflow_dispatch`
+- 构建产物在运行页 Artifacts：`windows-history-current-setup`（内含 `AgentDock-Workbench-Setup-amd64.exe`，保留 3 天）
+- 本仓库未配置签名 secrets，产物为未签名版；带 `test_tag` 的测试 Release 需要签名 secrets（未配置时工作流会拒绝）
+- 需要正式发版（带 tag 的 Release）时：配置 `WINDOWS_SIGNING_CERT_BASE64` / `WINDOWS_SIGNING_CERT_PASSWORD` 两个 secrets 后手动 dispatch 并填写 `test_tag`
+
+## 变更历史
+
+- 2026-10-18：仓库建立；提交 1（工作流 fork 适配）、提交 2（目标模式端点输入框修复）
