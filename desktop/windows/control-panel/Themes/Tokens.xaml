@@ -45,11 +45,18 @@
         <ToggleButton Focusable="False" IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" ClickMode="Press">
           <ToggleButton.Template><ControlTemplate TargetType="ToggleButton"><Border Background="{DynamicResource PanelBackground}" BorderBrush="{DynamicResource SeparatorBrush}" BorderThickness="1" CornerRadius="5"><TextBlock Text="⌄" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{DynamicResource SecondaryText}"/></Border></ControlTemplate></ToggleButton.Template>
         </ToggleButton>
-        <ContentPresenter Margin="8,4,25,4" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" IsHitTestVisible="False" VerticalAlignment="Center"/>
+        <ContentPresenter x:Name="SelectionBox" Margin="8,4,25,4" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" IsHitTestVisible="False" VerticalAlignment="Center"/>
+        <TextBox x:Name="PART_EditableTextBox" Style="{x:Null}" Background="Transparent" BorderThickness="0" Padding="0" Foreground="{TemplateBinding Foreground}" Margin="8,4,25,4" VerticalContentAlignment="Center" Visibility="Collapsed"/>
         <Popup x:Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" AllowsTransparency="True" Focusable="False" PopupAnimation="None">
           <Border MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="360" Background="{DynamicResource PanelBackground}" BorderBrush="{DynamicResource SeparatorBrush}" BorderThickness="1" Padding="4" CornerRadius="5"><ScrollViewer><ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/></ScrollViewer></Border>
         </Popup>
       </Grid>
+      <ControlTemplate.Triggers>
+        <Trigger Property="IsEditable" Value="True">
+          <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
+          <Setter TargetName="SelectionBox" Property="Visibility" Value="Collapsed"/>
+        </Trigger>
+      </ControlTemplate.Triggers>
     </ControlTemplate></Setter.Value></Setter>
   </Style>
   <Style TargetType="ComboBoxItem"><Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/><Setter Property="Padding" Value="8,5"/><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ComboBoxItem"><Border x:Name="Body" Background="Transparent" Padding="{TemplateBinding Padding}" CornerRadius="4"><ContentPresenter/></Border><ControlTemplate.Triggers><Trigger Property="IsHighlighted" Value="True"><Setter TargetName="Body" Property="Background" Value="{DynamicResource HoverBackground}"/></Trigger><Trigger Property="IsSelected" Value="True"><Setter TargetName="Body" Property="Background" Value="{DynamicResource SelectionBackground}"/><Setter Property="FontWeight" Value="SemiBold"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter></Style>
