@@ -16,11 +16,12 @@ git push origin main
 
 ## 本仓库相对上游的改动
 
-1. `desktop/windows/control-panel/Themes/Tokens.xaml`：ComboBox 模板补上可编辑部件（`PART_EditableTextBox` + `IsEditable` 触发器），修复目标模式弹窗"浏览器本机调试端点"输入框无法打字的问题；非可编辑下拉框行为不变（已单独提交）
-2. `.github/workflows/windows-installer.yml`：
+1. `desktop/windows/control-panel/Themes/Tokens.xaml`：ComboBox 模板补上可编辑部件（`PART_EditableTextBox` + `IsEditable` 触发器），修复目标模式弹窗"浏览器本机调试端点"输入框无法打字的问题；非可编辑下拉框行为不变
+2. `desktop/windows/control-panel/Services/GoalMode/RoxyDiscovery.cs`：端点发现通用化，扫描 RoxyChrome / Chrome / Edge / Brave / Chromium 主进程并解析 `--remote-debugging-port`（`DevToolsActivePort` 文件作为回退），修复"发现 Roxy"按钮找不到普通 Chrome 的问题
+3. `.github/workflows/windows-installer.yml`：
    - 历史升级矩阵缩减为 1.1.8 / 1.1.9 两个基线（缩短验证时间）
    - 历史基线安装包改为从上游仓库的 Release 下载（本仓库不承载旧版本发布）
-3. 其余工作流（macOS / Android / WB0x 候选 / CodeQL 等）在本仓库已禁用，减少无关运行；需要时 `gh workflow enable "<名称>"` 恢复
+4. 其余工作流（macOS / Android / WB0x 候选 / CodeQL 等）在本仓库已禁用，减少无关运行；需要时 `gh workflow enable "<名称>"` 恢复
 
 ## 构建与安装包获取
 
@@ -31,4 +32,8 @@ git push origin main
 
 ## 变更历史
 
-- 2026-10-18：仓库建立；提交 1（工作流 fork 适配）、提交 2（目标模式端点输入框修复）
+- 2026-10-18：仓库建立，已推送 3 个提交：
+  - `80fdc2b9` 工作流 fork 适配：历史基线改从上游 Release 下载、升级矩阵缩为 1.1.8/1.1.9、新增本说明文件
+  - `a89a2870` 目标模式端点输入框可编辑（ComboBox 模板补 `PART_EditableTextBox`）
+  - `397db582` 端点发现通用化（多浏览器进程扫描 + `--remote-debugging-port` 解析 + `DevToolsActivePort` 回退）
+- 验证记录：Windows frontend regression 在 `397db582` 全绿（双架构编译 + 目标模式 / 原生目标模式 / WPF 布局 / 网络共 5 个测试项目，逐步骤通过）；Windows Installer 全流程（构建、安装/升级 E2E、1.1.8/1.1.9 升级矩阵）在 `a89a2870` 与 `397db582` 均通过
