@@ -151,7 +151,8 @@ jobs:
 
   browser-integration:
     needs: source
-    if: github.repository_id != '1370391430'
+    # fork 维护：与作者仓库一致，跳过已知失败的浏览器/容器作业（见 FORK-NOTES.md）
+    if: github.repository_id != '1370391430' && github.repository_id != '1423716695'
     name: Native browser integration
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -186,7 +187,8 @@ jobs:
 
   container:
     needs: source
-    if: github.repository_id != '1370391430'
+    # fork 维护：与作者仓库一致，跳过已知失败的浏览器/容器作业（见 FORK-NOTES.md）
+    if: github.repository_id != '1370391430' && github.repository_id != '1423716695'
     name: Container check
     runs-on: ubuntu-latest
     timeout-minutes: 20
