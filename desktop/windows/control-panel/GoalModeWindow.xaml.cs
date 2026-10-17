@@ -58,7 +58,7 @@ public partial class GoalModeWindow : Window
         EndpointBox.ItemsSource = endpoints;
         if (endpoints.Length == 1)
         { EndpointBox.Text = endpoints[0]; await ReadTabsAsync(); }
-        else StatusText.Text = endpoints.Length == 0 ? "未发现运行中 Roxy 的调试端点，可手动填写已有本机端点。" : "发现多个浏览器端点，请选择后读取标签页。";
+        else StatusText.Text = endpoints.Length == 0 ? "未发现带调试端口的运行中浏览器，可手动填写本机端点。" : "发现多个浏览器端点，请选择后读取标签页。";
     }
 
     private async Task ReadTabsAsync()
